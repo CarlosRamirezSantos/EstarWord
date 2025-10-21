@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMantenimientosTable extends Migration
+class CreateMantenimientoTable extends Migration
 {
     public function up()
     {
