@@ -17,7 +17,6 @@ class Nave extends Model
         return $this->belongsTo(Planeta::class, 'planeta_id');
     }
 
-    // Una nave tiene muchos mantenimientos
     public function mantenimientos()
     {
         return $this->hasMany(Mantenimiento::class, 'nave_id');
@@ -26,7 +25,11 @@ class Nave extends Model
     // Una nave tiene muchos pilotos (relación muchos a muchos con tabla pivote)
     public function pilotos()
     {
-        return $this->belongsToMany(Piloto::class, 'piloto_nave', 'nave_id', 'piloto_id')
+        return $this->belongsToMany(
+            Piloto::class, 
+            'piloto_nave', 
+            'nave_id', 
+            'piloto_id')
             ->withPivot('fecha_inicio', 'fecha_fin')
             ->withTimestamps();
     }

@@ -15,11 +15,15 @@ class Piloto extends Model
         'anio_nacimiento',
         'genero',
     ];
-    
+
     public function naves()
     {
-        return $this->belongsToMany(Nave::class, 'nave_piloto', 'piloto_id', 'nave_id')
-                    ->withPivot('fecha_inicio_asociacion', 'fecha_fin_asociacion')
-                    ->withTimestamps();
+        return $this->belongsToMany(
+            Nave::class, 
+            'piloto_nave', 
+            'piloto_id', 
+            'nave_id')
+            ->withPivot('fecha_inicio', 'fecha_fin')
+            ->withTimestamps();
     }
 }
