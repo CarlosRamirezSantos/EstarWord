@@ -3,14 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests;
-use app\Http\Models\Nave;
+use App\Models\Nave;
 
 class NaveController extends Controller
 {
-     public function insertarNave(Request $request)
+    public function insertarNave(Request $request)
     {
-        // Crear sin validación automática (se recomienda validar de forma manual si se quiere)
+        
         $nave = new Nave();
         $nave->nombre = $request->nombre;
         $nave->modelo = $request->modelo;
@@ -23,7 +22,7 @@ class NaveController extends Controller
         return response()->json($nave, 201);
     }
 
-    public function show($id)
+    public function mostrarNave($id)
     {
         $nave = Nave::with(['planeta', 'pilotos', 'mantenimientos'])->findOrFail($id);
         return response()->json($nave);
@@ -33,7 +32,7 @@ class NaveController extends Controller
     {
         $nave = Nave::findOrFail($id);
 
-        // Actualizar sin validación automática
+        
         if ($request->has('nombre')) $nave->nombre = $request->nombre;
         if ($request->has('modelo')) $nave->modelo = $request->modelo;
         if ($request->has('tripulacion')) $nave->tripulacion = $request->tripulacion;

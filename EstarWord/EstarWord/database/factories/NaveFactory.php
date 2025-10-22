@@ -1,6 +1,7 @@
 <?php
 namespace Database\Factories;
 
+use App\Models\Planeta;
 use App\Models\Nave;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

@@ -9,7 +9,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('/planeta/naves', [MiControlador::class, 'verPersonas']);
 Route::put('modificarNave/{id}',[NaveController::class, 'modificarNave']);
 Route::post('insertarNave', [NaveController::class, 'insertarNave']);
+Route::get('mostrarNave/{id}',[NaveController::class,'mostrarNave']);
 Route::post('/planetas', [PlanetaController::class, 'insertarPlaneta']);
