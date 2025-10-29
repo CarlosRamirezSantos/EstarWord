@@ -13,6 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo('/api/nologin');
+        
+        $middleware->alias([ 
+        'mid.admin' => \App\Http\Middleware\MidAdmin::class,
+        'mid.gestor' => \App\Http\Middleware\MidGestor::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

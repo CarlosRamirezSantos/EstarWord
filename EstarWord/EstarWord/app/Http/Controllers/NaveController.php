@@ -5,23 +5,40 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Nave;
 use App\Models\Piloto;
+use Illuminate\Support\Facades\Validator;
 
 class NaveController extends Controller
 {
     public function insertarNave(Request $request)
     {
+        $input = $request->all();
 
-        $nave = new Nave();
-        $nave->nombre = $request->nombre;
-        $nave->modelo = $request->modelo;
-        $nave->tripulacion = $request->tripulacion;
-        $nave->pasajeros = $request->pasajeros;
-        $nave->clase_nave = $request->clase_nave;
-        $nave->planeta_id = $request->planeta_id;
-        $nave->save();
+        $rules = [
+            'nombre' => 'required|string|max:255',
+            'modelo' => 'required|string|max:255',
+            'tripulacion' => 'required|integer|min:0',
+            'pasajeros' => 'required|integer|min:0',
+            'clase_nave' => 'required|string|in:Carguero,Combate,Transporte',
+            'planeta_id' => 'required|exists:planetas,id',
+        ];
 
+        $messages = [
+            'required' => 'El campo :attribute es obligatorio.',
+            'in' => 'El campo :attribute debe ser uno de los siguientes valores: :values.',
+            'integer' => 'El campo :attribute debe ser un número entero.',
+            'min' => 'El campo :attribute debe ser al menos :min.',
+            'exists' => 'El :attribute indicado no existe.',
+        ];
+
+        $validator = Validator::make($input, $rules, $messages);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $nave = Nave::create($request->all());
         return response()->json($nave, 201);
     }
+
 
     public function mostrarNave($id)
     {
@@ -104,21 +121,21 @@ class NaveController extends Controller
     public function mostrarNavesSinPiloto()
     {
 
-    $naves = Nave::all();
-    $navesSinPiloto = [];
+        $naves = Nave::all();
+        $navesSinPiloto = [];
 
-    foreach ($naves as $nave) {
-        if (!$nave->pilotos()->exists()) {
-            $navesSinPiloto[] = $nave;
+        foreach ($naves as $nave) {
+            if (!$nave->pilotos()->exists()) {
+                $navesSinPiloto[] = $nave;
+            }
         }
+
+        return response()->json($navesSinPiloto);
+
+        // $navesSinPiloto = Nave::doesntHave('pilotos')->get();
+        // return response()->json($navesSinPiloto);
+
     }
-
-    return response()->json($navesSinPiloto);
-
-   // $navesSinPiloto = Nave::doesntHave('pilotos')->get();
-    // return response()->json($navesSinPiloto);
-
-}
 
 
 
