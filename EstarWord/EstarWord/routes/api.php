@@ -16,15 +16,15 @@ Route::get('/user', function (Request $request) {
 // Rutas públicas
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
+// Logout (revoca todos los tokens)
+Route::post('logout', [AuthController::class, 'logout']);
 Route::get('/nologin', function () {
     return response()->json(["success" => false, "message" => "Unauthorised"], 203);
 });
 
 // Rutas protegidas por autenticación
 Route::middleware('auth:sanctum')->group(function () {
-
-    // Logout (revoca el token actual)
-    Route::post('logout', [AuthController::class, 'logout']);
+    
 
     // Rutas solo para admin
     Route::middleware('mid.admin')->group(function () {
@@ -33,23 +33,21 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('usuarios/{id}', [UserController::class, 'update']);
         Route::delete('usuarios/{id}', [UserController::class, 'destroy']);
         Route::post('usuarios/{id}/role', [UserController::class, 'setRole']);
+        Route::put('modificarNave/{id}', [NaveController::class, 'modificarNave']);
+        Route::post('insertarNave', [NaveController::class, 'insertarNave']);
     });
 
     // Rutas para admin + gestor (acciones de mantenimiento y asignación de pilotos)
-    Route::middleware('mid.gestor')->group(function () {
-        Route::post('insertarMantenimiento', [MantenimientoCotroller::class, 'insertarMantenimiento']);
-        Route::delete('eliminarMantenimiento/{id}', [MantenimientoCotroller::class, 'destroy']);
-        Route::get('mostrarMantenimientoEntreFechas/{fechaI}/{fechaF}', [MantenimientoCotroller::class, 'mostrarMantenimientoEntreFechas']);
-        Route::post('asignarPilotoANave/{idNave}', [NaveController::class, 'asignarPilotoANave']);
-        Route::post('desasignarPilotoANave/{idPiloto}/{idNave}', [NaveController::class, 'desasignarPilotoANave']);
-    });
+        Route::post('insertarMantenimiento', [MantenimientoCotroller::class, 'insertarMantenimiento'])->middleware('mid.mantenimientoCrear');
+        Route::delete('eliminarMantenimiento/{id}', [MantenimientoCotroller::class, 'destroy'])->middleware('mid.mantenimientoBorrar');
+        Route::post('asignarPilotoANave/{idNave}', [NaveController::class, 'asignarPilotoANave'])->middleware('mid.pilotoAsignar');
+        Route::post('desasignarPilotoANave/{idPiloto}/{idNave}', [NaveController::class, 'desasignarPilotoANave'])->middleware('mid.pilotoDesasignar');
 
     // Rutas accesibles para cualquier usuario autenticado
-    Route::put('modificarNave/{id}', [NaveController::class, 'modificarNave']);
-    Route::post('insertarNave', [NaveController::class, 'insertarNave']);
-    Route::get('mostrarNave/{id}', [NaveController::class, 'mostrarNave']);
-    Route::post('planetas', [PlanetaController::class, 'insertarPlaneta']);
-    Route::get('mostrarNavesSinPiloto', [NaveController::class, 'mostrarNavesSinPiloto']);
-    Route::get('mostrarPilotosConNave', [PilotoController::class, 'mostrarPilotosConNave']);
-    Route::get('mostrarPilotosConNaveActual', [PilotoController::class, 'mostrarPilotosConNaveActual']);
+        Route::get('mostrarMantenimientoEntreFechas/{fechaI}/{fechaF}', [MantenimientoCotroller::class, 'mostrarMantenimientoEntreFechas'])->middleware('mid.mantenimientoMostrar');
+        Route::get('mostrarNave/{id}', [NaveController::class, 'mostrarNave'])->middleware('mid.naveMostrar');
+        Route::post('planetas', [PlanetaController::class, 'mostrarPlanetas'])->middleware('mid.planetasMostrar');
+        Route::get('mostrarNavesSinPiloto', [NaveController::class, 'mostrarNavesSinPiloto'])->middleware('mid.naveMostrar');
+        Route::get('mostrarPilotosConNave', [PilotoController::class, 'mostrarPilotosConNave'])->middleware('mid.pilotoMostrar');
+        Route::get('mostrarPilotosConNaveActual', [PilotoController::class, 'mostrarPilotosConNaveActual'])->middleware('mid.pilotoMostrar');
 });

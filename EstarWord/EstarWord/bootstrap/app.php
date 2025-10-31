@@ -16,7 +16,14 @@ return Application::configure(basePath: dirname(__DIR__))
         
         $middleware->alias([ 
         'mid.admin' => \App\Http\Middleware\MidAdmin::class,
-        'mid.gestor' => \App\Http\Middleware\MidGestor::class,
+        'mid.mantenimientoCrear'=> \App\Http\Middleware\MidMantenimientoCrear::class,
+        'mid.mantenimientoBorrar'=> \App\Http\Middleware\MidMantenimientoBorrar::class,
+        'mid.pilotoDesasignar'=> \App\Http\Middleware\MidPilotoDesasignar::class,
+        'mid.pilotoAsignar'=> \App\Http\Middleware\MidPilotoAsignar::class,
+        'mid.pilotoMostrar'=> \App\Http\Middleware\MidPilotoMostrar::class,
+        'mid.naveMostrar'=> \App\Http\Middleware\MidNaveMostrar::class,
+        'mid.planetasMostrar'=> \App\Http\Middleware\MidPlanetaMostrar::class,
+        'mid.mantenimientoMostrar'=> \App\Http\Middleware\MidMantenimientoMostrar::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

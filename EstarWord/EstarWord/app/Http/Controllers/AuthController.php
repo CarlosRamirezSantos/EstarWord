@@ -38,16 +38,23 @@ class AuthController extends Controller
                 $abilities = ['*'];
             } else if ($auth->rol === 'gestor') {
                 $abilities = [
-                    'mantenimiento:*',
+                    'mantenimiento:crear',
+                    'mantenimiento:borrar',
                     'piloto:asignar',
                     'piloto:desasignar',
-                    'listados:ver'
                 ];
             } else { // usuario u otros
-                $abilities = ['listados:ver'];
+                $abilities = [
+
+                    'mantenimiento:mostrar',
+                    'piloto:mostrar',
+                    'planeta:mostrar',
+                    'nave:mostrar'
+
+                ];
             }
 
-            // Crear token (una sola vez) con abilities
+            // Crear token con abilities
             $tokenResult = $auth->createToken('Atleti', $abilities);
 
             // Actualizar expiración si se usa (opcional, depende de configuración)

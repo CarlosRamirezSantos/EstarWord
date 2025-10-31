@@ -9,13 +9,13 @@ class MidAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        $user = $request->user();
-        if (!$user) {
+        $usuario = $request->user();
+        if (!$usuario) {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
 
         // comprobar rol o ability
-        if ($user->rol === 'admin' || $request->user()->tokenCan('*')) {
+        if ($usuario && $request->user()->tokenCan('*')) {
             return $next($request);
         }
 
