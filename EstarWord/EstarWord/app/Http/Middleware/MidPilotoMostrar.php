@@ -17,7 +17,7 @@ class MidPilotoMostrar
     {
 
         $usuario = $request->user();
-        if ($usuario && ($usuario->tokenCan(':piloto:mostrar') || $usuario->tokenCan('*') )) {
+        if ($usuario && ($usuario->tokenCan('piloto:mostrar') || $usuario->tokenCan('*') )) {
             return $next($request);
         }
 

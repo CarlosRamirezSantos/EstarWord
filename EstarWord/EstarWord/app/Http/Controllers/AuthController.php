@@ -41,7 +41,7 @@ class AuthController extends Controller
                     'mantenimiento:crear',
                     'mantenimiento:borrar',
                     'piloto:asignar',
-                    'piloto:desasignar',
+                    'piloto:desasignar'
                 ];
             } else { // usuario u otros
                 $abilities = [

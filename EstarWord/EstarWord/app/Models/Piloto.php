@@ -14,6 +14,7 @@ class Piloto extends Model
         'altura',
         'anio_nacimiento',
         'genero',
+        'profile_photo'
     ];
 
     public function naves()
