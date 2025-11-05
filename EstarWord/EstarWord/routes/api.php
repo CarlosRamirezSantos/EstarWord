@@ -37,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('insertarNave', [NaveController::class, 'insertarNave']);
         Route::post('insertarPiloto',[PilotoController::class, 'insertarPiloto']);
         Route::post('/subircloud/{idPiloto}', [PilotoController::class,'subirImagenCloud']);
+        Route::delete('eliminarPiloto/{id}', [PilotoController::class, 'destroy']);
+        Route::put('modificarMantenimiento/{id}', [MantenimientoCotroller::class, 'update']);
     });
 
     // Rutas para admin + gestor (acciones de mantenimiento y asignación de pilotos)

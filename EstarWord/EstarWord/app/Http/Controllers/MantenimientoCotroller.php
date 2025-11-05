@@ -53,4 +53,40 @@ class MantenimientoCotroller extends Controller
 
         return response()->json($mantenimientos, 200);
     }
+
+/**
+     * Actualiza un mantenimiento existente.
+     */
+    public function update(Request $request, $id)
+    {
+   
+        $mantenimiento = Mantenimiento::findOrFail($id);
+
+        $rules = [
+            'nave_id' => 'required|exists:naves,id',
+            'fecha' => 'required|date',
+            'descripcion' => 'required|string|max:1000',
+            'coste' => 'required|numeric|min:0',
+        ];
+
+        $messages = [
+            'required' => 'El campo :attribute es obligatorio.',
+            'date' => 'El campo :attribute debe ser una fecha válida.',
+            'numeric' => 'El campo :attribute debe ser un número.',
+            'min' => 'El campo :attribute debe ser al menos :min.',
+            'exists' => 'La nave indicada no existe.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $mantenimiento->update($request->all());
+
+    
+        return response()->json($mantenimiento, 200);
+    }
+
 }

@@ -108,6 +108,14 @@ public function subirImagenCloud(Request $request, $idPiloto){
         return response()->json(['error' => 'No se recibió ningún archivo.'], 400);
     }
 
+
+    public function destroy($id)
+    {
+        $piloto = Piloto::findOrFail($id);
+        $piloto->delete();
+        return response()->json(null, 204);
+    }
+
 }
 
 
